@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>marion hanson dot com</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            font-weight: bold;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #fff;
+            overflow-x: hidden;
+            padding: 20px;
+        }
+
+        .text-container {
+            text-align: center;
+            font-size: clamp(48px, 15vw, 200px);
+            line-height: 1;
+            color: #000;
+            word-break: break-word;
+        }
+
+        .letter {
+            display: inline-block;
+            transition: color 0.3s ease;
+            cursor: default;
+            user-select: none;
+        }
+
+        .word-break {
+            display: inline-block;
+            width: 0.3em;
+        }
+
+        .word-break::before {
+            content: ' ';
+        }
+
+        .word-wrapper {
+            display: inline;
+        }
+
+        /* Large screens - fit text on one line */
+        @media (min-width: 1120px) {
+            .text-container {
+                font-size: clamp(24px, 8vw, 150px);
+                white-space: nowrap;
+                width: 100%;
+            }
+        }
+
+        /* Mobile/tablet styles - huge text, each word 100% width */
+        @media (max-width: 1119px) {
+            body {
+                align-items: flex-start;
+                padding-top: 20px;
+                padding-bottom: 20px;
+            }
+
+            .text-container {
+                font-size: clamp(48px, 25vw, 300px);
+                display: flex;
+                flex-direction: column;
+                text-align: left;
+                line-height: 1.1;
+                width: 100%;
+            }
+
+            .word-break {
+                display: block;
+                width: 100%;
+                height: 0;
+            }
+
+            .word-wrapper {
+                display: block;
+                width: 100%;
+            }
+
+            .letter {
+                display: inline-block;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="text-container" id="textContainer"></div>
+
+    <script>
+        const colors = [
+            '#A4243B',
+            '#D8973C',
+            '#BD632F',
+            '#107E7D',
+            '#044B7F',
+            '#C98BB9',
+            '#E85D75',
+            '#5FAD56',
+            '#F2C14E',
+            '#7353BA'
+        ];
+
+        const text = 'marion hanson dot com';
+        const container = document.getElementById('textContainer');
+        const words = text.split(' ');
+
+        // Create the HTML structure
+        words.forEach((word, wordIndex) => {
+            // Create word container
+            const wordContainer = document.createElement('span');
+            wordContainer.className = 'word-wrapper';
+
+            // Add word-break for mobile (line break between words)
+            if (wordIndex > 0) {
+                const wordBreak = document.createElement('span');
+                wordBreak.className = 'word-break';
+                container.appendChild(wordBreak);
+            }
+
+            // Add each letter of the word
+            word.split('').forEach((char) => {
+                const span = document.createElement('span');
+                span.className = 'letter';
+                span.textContent = char;
+                
+                span.addEventListener('mouseenter', function() {
+                    const randomColor = colors[Math.floor(Math.random() * colors.length)];
+                    this.style.color = randomColor;
+                });
+                
+                span.addEventListener('mouseleave', function() {
+                    this.style.color = '#000';
+                });
+                
+                wordContainer.appendChild(span);
+            });
+
+            container.appendChild(wordContainer);
+        });
+    </script>
+</body>
+</html>
